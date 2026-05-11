@@ -1,5 +1,6 @@
 import sys
 from urllib.parse import urlparse
+from pilot import pilot
 
 def is_valid_url(url: str) -> bool:
     """
@@ -22,9 +23,14 @@ def main():
 
     url = url.strip()
 
+    # Prepend https:// if a scheme is missing so urlparse works correctly
+    if not url.startswith(('http://', 'https://')):
+        url = 'https://' + url
+
     if is_valid_url(url):
         print(f"\n[Success] Received valid URL: {url}")
-        # TODO: Implement encoding logic here
+        short_url = pilot(url)
+        print(f"[Shortened] Your short URL is: {short_url}")
     else:
         print(f"\n[Error] Invalid URL provided: '{url}'. Make sure it includes http:// or https://")
 
