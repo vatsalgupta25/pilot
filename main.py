@@ -1,5 +1,7 @@
 import sys
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+from db import init_db
 from pilot import pilot
 
 def is_valid_url(url: str) -> bool:
@@ -15,6 +17,16 @@ def is_valid_url(url: str) -> bool:
         return False
 
 def main():
+    # Load environment variables from .env
+    load_dotenv()
+    
+    # Initialize the database (create tables if not exists)
+    try:
+        init_db()
+    except Exception as e:
+        print(f"[Error] Failed to initialize database: {e}")
+        sys.exit(1)
+
     # Allow passing URL as a command line argument or prompt for it
     if len(sys.argv) > 1:
         url = sys.argv[1]

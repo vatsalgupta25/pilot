@@ -1,4 +1,5 @@
 import base64
+from db import save_url_mapping
 
 def pilot(url: str) -> str:
     """
@@ -17,5 +18,8 @@ def pilot(url: str) -> str:
     
     # Generate the short URL (using a dummy domain for now)
     short_url = f"https://pi.lot/{encoded_str}"
+    
+    # Save mapping to the database
+    save_url_mapping(url, encoded_str)
     
     return short_url
