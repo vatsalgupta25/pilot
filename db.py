@@ -53,3 +53,22 @@ def save_url_mapping(original_url: str, short_code: str):
         raise
     finally:
         conn.close()
+
+def get_original_url(short_code: str):
+    """
+    Retrieves the original URL for a given short code.
+    Returns the original URL string if found, otherwise None.
+    """
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT original_url FROM urls WHERE short_code = %s",
+                (short_code,)
+            )
+            result = cur.fetchone()
+            if result:
+                return result[0]
+            return None
+    finally:
+        conn.close()
